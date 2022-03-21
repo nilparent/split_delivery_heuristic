@@ -1,36 +1,4 @@
-#pragma once
-#include <iostream>
 #include "instance_generator.h"
-#include <cmath>
-#include <cstdlib>
-using namespace std;
-#include <Imagine/Graphics.h>
-using namespace Imagine;
-
-Instance :: ~Instance(){
-    delete [] listclient;
-}
-Instance :: Instance(int numberofclient,int Xmap,int Ymap,int Maxdemand){
-    nbclient = numberofclient;
-    maxdemand = Maxdemand;
-    xmap=Xmap;
-    ymap = Ymap;
-    listclient = new Client[nbclient];
-    srand ( (unsigned int)time(0) );
-
-    for(int i=0;i<nbclient;i++){
-        listclient[i].demand = rand()%(maxdemand-1) + 1;//a client cannot have a demand null
-        listclient[i].x = rand()%xmap;
-        listclient[i].y = rand()%ymap;
-    }
-}
-void Instance :: displayinstance(){
-    openWindow(xmap,ymap);
-    for(int i=0;i<nbclient;i++){
-        fillCircle(listclient[i].x,listclient[i].y,5*listclient[i].demand,BLACK);
-    }
-    endGraphics();
-}
 
 double distance(Client a, Client b) {
     double xa=a.x;
@@ -41,6 +9,66 @@ double distance(Client a, Client b) {
     return dist;
 }
 
+Instance :: ~Instance(){
+    delete [] listclient;
+    delete [] distanceclient;
+}
+void Instance :: Modif_instance(int numberofclient, int Xmap, int Ymap, int Maxdemand){
+    nbclient = numberofclient;
+    maxdemand = Maxdemand;
+    xmap=Xmap;
+    ymap = Ymap;
+    listclient = new Client[nbclient];
+    srand ( (unsigned int)time(0) );
+    for(int i=0;i<nbclient;i++){
+        listclient[i].demand = rand()%(maxdemand-1) + 1;//a client cannot have a demand null
+        listclient[i].x = rand()%xmap;
+        listclient[i].y = rand()%ymap;
+    }
+    distanceclient = new double[nbclient*nbclient];
+    for (int i=0;i<nbclient;i++){
+        for (int j=0;j<nbclient;j++)
+            distanceclient[i+j*nbclient]=distance(listclient[i],listclient[j]);
+    }
+    depot.x = xmap/2;
+    depot.y = ymap/2;
+    depot.demand = 10;
+}
+Instance :: Instance(int numberofclient,int Xmap,int Ymap,int Maxdemand){
+    nbclient = numberofclient;
+    maxdemand = Maxdemand;
+    xmap=Xmap;
+    ymap = Ymap;
+    listclient = new Client[nbclient];
+    srand ( (unsigned int)time(0) );
+    for(int i=0;i<nbclient;i++){
+        listclient[i].demand = rand()%(maxdemand-1) + 1;//a client cannot have a demand null
+        listclient[i].x = rand()%xmap;
+        listclient[i].y = rand()%ymap;
+    }
+    distanceclient = new double[nbclient*nbclient];
+    for (int i=0;i<nbclient;i++){
+        for (int j=0;j<nbclient;j++)
+            distanceclient[i+j*nbclient]=distance(listclient[i],listclient[j]);
+    }
+    depot.x = xmap/2;
+    depot.y = ymap/2;
+    depot.demand = 10;
+}
+void displayclient(Client a ,Color col){
+    fillCircle(a.x,a.y,3 * a.demand,col);
+}
+
+void Instance :: displayinstance(){
+    openWindow(xmap,ymap);
+    for(int i=0;i<nbclient;i++){
+        displayclient(listclient[i],BLACK);
+    }
+    displayclient(depot,RED);
+}
+Instance ::Instance(){//pb d'instance...
+
+}
 void writeFile (std::string directory, std::string to_write)
 {
   ofstream myfile;

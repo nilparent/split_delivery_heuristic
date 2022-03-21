@@ -6,6 +6,6 @@ find_package(Imagine REQUIRED)
 
 project(split_delivery_heuristic)
 
-add_executable(split_delivery_heuristic instance_generator.cpp main.cpp)
+add_executable(split_delivery_heuristic instance_generator.cpp main.cpp Solution.cpp Solution.h instance_generator.h)
 ImagineUseModules(split_delivery_heuristic Graphics)
 
