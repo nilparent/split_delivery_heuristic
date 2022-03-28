@@ -20,14 +20,8 @@ int main(){
     double cost [3];
     for (int i=0;i<3;i++)
         cost[i]=i;
-    Solution sol = Solution(16,500,500,3,500,1000000,cost);
+    Solution sol = Solution(5,500,500,1,500,3,cost);
 
-//    cout <<k.instance.nbclient;
-//    cout<<"\n coordonnex";
-//    cout <<k.instance.listclient[0].x;
-//    cout<<"\n coordonney";
-//    cout <<k.instance.listclient[0].y;
     sol.displaysolution();
-
 
 }

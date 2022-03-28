@@ -6,12 +6,21 @@ Truck :: ~Truck(){
     delete [] quantity_took;
 }
 
+bool is_in(int T [],int len_T,int argument){
+    for (int i=0;i<len_T;i++)
+        if (T[i] == argument)
+            return(true);
+    return(false);
+}
 
 bool serve_client(Truck& actual_truck,int idclient,double& demand_deserve,double capacitytruck){//take the id of the client and serve him with the truck actual_truck
     //the actual_truck is use and deserve one more client idclient
 
-
     bool is_client_deserve=capacitytruck - actual_truck.sum_quantity_took >= demand_deserve;
+    //the truck is full
+    if (capacitytruck - actual_truck.sum_quantity_took == 0)
+        return(false);
+
     if (is_client_deserve){//the actual truck can completely serve the client_deserve
         actual_truck.quantity_took[actual_truck.number_of_client_deserve] = demand_deserve;
         actual_truck.sum_quantity_took += demand_deserve;
@@ -22,7 +31,6 @@ bool serve_client(Truck& actual_truck,int idclient,double& demand_deserve,double
         demand_deserve -= capacitytruck - actual_truck.sum_quantity_took; //need another truck to deserve this client
         actual_truck.quantity_took[actual_truck.number_of_client_deserve] = capacitytruck - actual_truck.sum_quantity_took;
         actual_truck.sum_quantity_took += capacitytruck - actual_truck.sum_quantity_took;
-        cout<<"babines";
     }
     actual_truck.use= true;
     actual_truck.path[actual_truck.number_of_client_deserve] = idclient;
@@ -47,10 +55,11 @@ Solution :: Solution(int numberofclient,int Xmap,int Ymap,int Maxdemand,double N
                 truck_path[i].quantity_took = new double [instance.nbclient];
 
     //initialize the solution
-    int actual_truck = 0;//the truck that we will full
+    int actual_truck = 0; //the truck that we will full
 
     //we have to sort the listclient of the instance to have a path which minimize the travel between each client
-    //for (int i =0;i< instance.nbclient;i++)
+
+
     //we copy the list
     //    ;
     for (int i =0;i<instance.nbclient;i++){
@@ -76,6 +85,8 @@ Solution :: Solution(int numberofclient,int Xmap,int Ymap,int Maxdemand,double N
     for (int clientdeserve = 0;clientdeserve < instance.nbclient;clientdeserve++){
         while (not(is_client_serve)){
             is_client_serve = serve_client( truck_path[actual_truck],clientdeserve,demand_deserve[clientdeserve],capacitytruck);
+            if (not(is_client_serve))
+                actual_truck+=1;
         }
         //next client
         is_client_serve = false;
@@ -96,8 +107,6 @@ void Solution :: displaysolution(){
                 int numclient=truck_path[i].path[j];
                 drawline(point,instance.listclient[numclient]);
                 point = instance.listclient[numclient];
-                cout<<"\n numclient";
-                cout<<numclient;
             }
 
             drawline(instance.depot,point);
@@ -106,8 +115,6 @@ void Solution :: displaysolution(){
     endGraphics();
 }
 Solution :: ~Solution(){
-    for (int j=0;j<nbtruckmax;j++)
-        truck_path[j].~Truck();
     delete [] truck_path;
     instance.~Instance();
 }

@@ -20,10 +20,18 @@ void Instance :: Modif_instance(int numberofclient, int Xmap, int Ymap, int Maxd
     ymap = Ymap;
     listclient = new Client[nbclient];
     srand ( (unsigned int)time(0) );
-    for(int i=0;i<nbclient;i++){
-        listclient[i].demand = rand()%(maxdemand-1) + 1;//a client cannot have a demand null
-        listclient[i].x = rand()%xmap;
-        listclient[i].y = rand()%ymap;
+    if (maxdemand == 1)
+        for(int i=0;i<nbclient;i++){
+            listclient[i].demand = 1;//the demand of the client is necessatily 1
+            listclient[i].x = rand()%xmap;
+            listclient[i].y = rand()%ymap;
+        }
+    else{
+        for(int i=0;i<nbclient;i++){
+            listclient[i].demand = rand()%(maxdemand-1) + 1;//a client cannot have a demand null
+            listclient[i].x = rand()%xmap;
+            listclient[i].y = rand()%ymap;
+        }
     }
     distanceclient = new double[nbclient*nbclient];
     for (int i=0;i<nbclient;i++){
@@ -41,11 +49,18 @@ Instance :: Instance(int numberofclient,int Xmap,int Ymap,int Maxdemand){
     ymap = Ymap;
     listclient = new Client[nbclient];
     srand ( (unsigned int)time(0) );
-    for(int i=0;i<nbclient;i++){
-        listclient[i].demand = rand()%(maxdemand-1) + 1;//a client cannot have a demand null
-        listclient[i].x = rand()%xmap;
-        listclient[i].y = rand()%ymap;
-    }
+    if (maxdemand == 1)
+        for(int i=0;i<nbclient;i++){
+            listclient[i].demand = 1;//the demand of the client is necessatily 1
+            listclient[i].x = rand()%xmap;
+            listclient[i].y = rand()%ymap;
+        }
+    else{
+        for(int i=0;i<nbclient;i++){
+            listclient[i].demand = rand()%(maxdemand-1) + 1;//a client cannot have a demand null
+            listclient[i].x = rand()%xmap;
+            listclient[i].y = rand()%ymap;
+        }}
     distanceclient = new double[nbclient*nbclient];
     for (int i=0;i<nbclient;i++){
         for (int j=0;j<nbclient;j++)
@@ -71,10 +86,10 @@ Instance ::Instance(){//pb d'instance...
 }
 void writeFile (std::string directory, std::string to_write)
 {
-  ofstream myfile;
-  myfile.open(directory);
-  myfile << to_write +"\n";
+    ofstream myfile;
+    myfile.open(directory);
+    myfile << to_write +"\n";
 
-  myfile.close();
-  return ;
+    myfile.close();
+    return ;
 }
