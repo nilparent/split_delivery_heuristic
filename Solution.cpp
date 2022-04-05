@@ -13,6 +13,8 @@ bool is_in(int T [],int len_T,int argument){
     return(false);
 }
 
+
+
 bool serve_client(Truck& actual_truck,int idclient,double& demand_deserve,double capacitytruck){//take the id of the client and serve him with the truck actual_truck
     //the actual_truck is use and deserve one more client idclient
 
@@ -92,6 +94,11 @@ Solution :: Solution(int numberofclient,int Xmap,int Ymap,int Maxdemand,double N
         is_client_serve = false;
     }
 }
+
+
+
+
+
 
 void drawline(Client a,Client b){
     drawLine(a.x,a.y,b.x,b.y,BLACK);

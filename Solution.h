@@ -18,6 +18,7 @@ struct Solution{
     double cost [3];//parameters cost cost[0] : building cost  // cost[1] : routing_cost // cost[2] : stop_cost
     Truck * truck_path;
     void displaysolution();
+    void first_optimization();
     void calcul_solution_cost();//actualize the solution_cost (good for the beginning)
     Solution(int numberofclient,int Xmap,int Ymap,int Maxdemand,double NBTRUCKMAX, double CAPACITYTRUCK,double Cost []);
     ~Solution();
