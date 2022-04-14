@@ -12,6 +12,7 @@ double distance(Client a, Client b) {
 Instance :: ~Instance(){
     delete [] listclient;
     delete [] distanceclient;
+    delete [] client_already_served;
 }
 void Instance :: Modif_instance(int numberofclient, int Xmap, int Ymap, int Maxdemand){
     nbclient = numberofclient;
