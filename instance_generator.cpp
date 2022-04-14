@@ -70,6 +70,7 @@ Instance :: Instance(int numberofclient,int Xmap,int Ymap,int Maxdemand){
     depot.y = ymap/2;
     depot.demand = 10;
 }
+
 void displayclient(Client a ,Color col){
     fillCircle(a.x,a.y,3 * a.demand,col);
 }

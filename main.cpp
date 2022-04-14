@@ -20,8 +20,26 @@ int main(){
     double cost [3];
     for (int i=0;i<3;i++)
         cost[i]=i;
-    Solution sol = Solution(5,500,500,1,500,3,cost);
+
+    int number_of_client = 10;
+    int height = 500;
+    int width = 500;
+    int capacity_max = 5;
+    int demand_max = 1;
+    int number_of_truck_max = 500;
+
+
+    Solution sol = Solution(number_of_client,height,width,demand_max,number_of_truck_max,capacity_max,cost);
+
+
+
+    for (int i =0;i<number_of_truck_max;i++)
+        if (sol.truck_path[i].use)
+            sol.truck_path[i].print();
 
     sol.displaysolution();
+
+
+
 
 }
