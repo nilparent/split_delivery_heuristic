@@ -141,16 +141,17 @@ Solution :: Solution(int numberofclient,int Xmap,int Ymap,int Maxdemand,double N
 
     //we copy the list
     //    ;
-    for (int i =0;i<instance.nbclient;i++){
-        cout<<"\n idclient i :";
-        cout<<i;
-        cout<<"\n position : ";
-        cout<<instance.listclient[i].x;
-        cout<<"   ";
-        cout<<instance.listclient[i].y;
-        cout<<"\n demand : ";
-        cout<<instance.listclient[i].demand;
-    }
+
+//    for (int i =0;i<instance.nbclient;i++){
+//        cout<<"\n idclient i :";
+//        cout<<i;
+//        cout<<"\n position : ";
+//        cout<<instance.listclient[i].x;
+//        cout<<"   ";
+//        cout<<instance.listclient[i].y;
+//        cout<<"\n demand : ";
+//        cout<<instance.listclient[i].demand;
+//    }
 
 
     double demand_deserve [instance.nbclient];
@@ -180,8 +181,6 @@ void Solution :: displaysolution(){
     for (int i=0;i<nbtruckmax;i++){
         if (truck_path[i].use){
             Client point = instance.depot;
-            cout<<"numberofclient";
-            cout<<truck_path[i].number_of_client_deserve;
             for (int j=0;j<truck_path[i].number_of_client_deserve;j++){
                 int numclient=truck_path[i].path[j];
                 drawline(point,instance.listclient[numclient]);
