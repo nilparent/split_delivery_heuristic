@@ -1,23 +1,65 @@
 #include "heuristique.h"
 
-bool cout_swap_two_clients_from_one_truck(Truck& truck,int i, int j,double *& distance,Client depot){
+
+void assignation_client_depot(int i,int& id_swap_before, int& id_swap_after,int id_depot,Truck truck){
+    //give the id of the client before and after the ieme client deserved by the truck
+
+    if (i==0){
+        id_swap_before = id_depot;
+    }
+    else {
+        id_swap_before = truck.path[i-1];
+    }
+    if(i == truck.number_of_client_deserve-1)
+        id_swap_after = id_depot;
+
+    else{
+        id_swap_after = truck.path[i+1];
+    }
+}
+
+
+double calc_distance(const Instance & instance,int id1,int id2,int depot_client){
+   if (id1 == depot_client)
+       return(distance(instance.listclient[id2],instance.depot));
+
+   if (id2 == depot_client)
+       return(distance(instance.listclient[id1],instance.depot));
+
+   return distance(instance.listclient[id1],instance.listclient[id2]);
+}
+
+bool cout_swap_two_clients_from_one_truck(Truck& truck,int i, int j,const Instance & instance){
     double initial_cost = 0;
     double final_cost= 0;
 
-    double id_client_swap_1= truck.path[i];
-    double id_client_swap_2= truck.path[j];
-    //problem with i=0 and j=client_serve
+    int id_client_swap_1= truck.path[i];
+    int id_client_swap_2= truck.path[j];
+    //problem with i=0 and j=client_serve-1
 
-    double id_swap_before_1;
-    double id_swap_before_2;
-    double id_swap_after_1;
-    double id_swap_after_2;
+    int id_depot=instance.nbclient;
+
+    int id_swap_before_1;
+    int id_swap_after_1;
+
+    int id_swap_before_2;
+    int id_swap_after_2;
+
+    assignation_client_depot(i,id_swap_before_1,id_swap_after_1,id_depot,truck);
+    assignation_client_depot(j,id_swap_before_2,id_swap_after_2,id_depot,truck);
 
 
+//calcul des coûts
 
+    initial_cost += calc_distance(instance,id_swap_before_1,id_client_swap_2,id_depot);
+    initial_cost += calc_distance(instance,id_swap_after_1,id_client_swap_2,id_depot);
+    final_cost += calc_distance(instance,id_swap_before_2,id_client_swap_1,id_depot);
+    final_cost += calc_distance(instance,id_swap_after_2,id_client_swap_1,id_depot);
 
     return initial_cost>final_cost;
 }
+
+
 void swap_two_clients_from_one_truck(Truck& truck,int i, int j){
     
     int buffer_id_client = truck.path[i];
@@ -30,6 +72,9 @@ void swap_two_clients_from_one_truck(Truck& truck,int i, int j){
     
 }
 
+bool cout_D_up_star(Truck& truck,int i, int j,const Instance & instance){
+
+}
 void D_up_star(Truck& truck,int i,int j){
     //reverse the client between i and j
     int * client_change;
@@ -53,6 +98,8 @@ void D_up_star(Truck& truck,int i,int j){
     delete[] client_change;
     delete[] quantity_took_change;
 }
+
+
 bool exchange_and_swap_two_clients_from_two_truck(Truck& truck1,int i1,Truck& truck2,int i2,double capacity_truck){
     
     //can we do the swap
@@ -74,4 +121,55 @@ bool exchange_and_swap_two_clients_from_two_truck(Truck& truck1,int i1,Truck& tr
         truck2.sum_quantity_took = quantity_took_update_2;
     }
     return swap;
+}
+
+
+
+void first_heuristic(Solution& Sol, int nb_max_iter){
+    srand (time(NULL));
+
+    //let's find the first empty truck
+
+    int nb_truck=0;
+    while (Sol.truck_path[nb_truck].use){
+        nb_truck+=1;
+    }
+    for (int iter=0;iter<nb_max_iter;iter++){
+        int nclient1_1;
+        int nclient1_2;
+        int nclient2_1;
+        int nclient2_2;
+
+        int truck1;
+        int truck2;
+
+        truck1 = rand() % nb_truck;
+        truck2 = rand() % nb_truck;
+
+        nclient1_1 = rand() % Sol.truck_path[truck1].number_of_client_deserve;
+        nclient1_2 = rand() % Sol.truck_path[truck1].number_of_client_deserve;
+        nclient2_1 = rand() % Sol.truck_path[truck1].number_of_client_deserve;
+        nclient2_2 = rand() % Sol.truck_path[truck1].number_of_client_deserve;
+
+        int method ;
+        method = rand()%3;
+
+        if (method==0){
+            if (cout_swap_two_clients_from_one_truck(Sol.truck_path[truck1],nclient1_1, nclient1_2, Sol.instance)){
+                swap_two_clients_from_one_truck(Sol.truck_path[truck1],nclient1_1, nclient1_2);
+            }
+        }
+
+
+        if (method==1){
+
+        }
+        if (method==2){
+
+        }
+
+
+
+    }
+
 }

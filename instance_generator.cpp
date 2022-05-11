@@ -1,6 +1,6 @@
 #include "instance_generator.h"
 
-double distance(Client a, Client b) {
+double distance( const Client &a, const Client &b) {
     double xa=a.x;
     double xb=b.x;
     double ya=a.y;
