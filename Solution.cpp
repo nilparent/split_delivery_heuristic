@@ -59,7 +59,7 @@ int find_indice(double T[],int len_T,double argument){//renvoie l'indice de la p
 }
 void sort_list(int number_client,int list_sorted[],double* distance ){
     for (int i=0;i<number_client;i++)
-        list_sorted[i] = 0;//initialisation avec le client 0
+        list_sorted[i] = 0;  //initialisation avec le client 0
     for (int count=0;count<number_client-1;count++){
         double* distance_sorted ;
         double* distance_non_sorted;
@@ -171,6 +171,11 @@ Solution :: Solution(int numberofclient,int Xmap,int Ymap,int Maxdemand,double N
         //next client
         is_client_serve = false;
     }
+    int cost=0;
+    for (int i=0;i<nbtruckmax;i++){
+        cost+=truck_path[i].cost(instance, cost);
+    }
+    solution_cost=cost;
 }
 
 void drawline(Client a,Client b){

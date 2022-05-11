@@ -1,6 +1,10 @@
 #include "heuristique.h"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
-bool cout_swap_two_clients_from_one_truck(Truck& truck,int i, int j,double *& distance,Client depot){
+
+
+bool cout_swap_two_clients_from_one_truck(Truck& truck,int i, int j,Instance depot){
     double initial_cost = 0;
     double final_cost= 0;
 
@@ -75,3 +79,60 @@ bool exchange_and_swap_two_clients_from_two_truck(Truck& truck1,int i1,Truck& tr
     }
     return swap;
 }
+
+
+void first_heuristic(Solution& Sol, int nb_max_iter){
+    srand (time(NULL));
+
+    //let's find the first empty truck
+
+    int nb_truck=0;
+    while (Sol.truck_path[nb_truck].use){
+        nb_truck+=1;
+    }
+    for (int iter=0;iter<nb_max_iter;iter++){
+        int nclient1_1;
+        int nclient1_2;
+        int nclient2_1;
+        int nclient2_2;
+
+        int truck1;
+        int truck2;
+
+        truck1 = rand() % nb_truck;
+        truck2 = rand() % nb_truck;
+
+        nclient1_1 = rand() % Sol.truck_path[truck1].number_of_client_deserve;
+        nclient1_2 = rand() % Sol.truck_path[truck1].number_of_client_deserve;
+        nclient2_1 = rand() % Sol.truck_path[truck1].number_of_client_deserve;
+        nclient2_2 = rand() % Sol.truck_path[truck1].number_of_client_deserve;
+
+        int method ;
+        method = rand()%3;
+
+        if (method==0){
+            if (cout_swap_two_clients_from_one_truck(Sol.truck_path[truck1],nclient1_1, nclient1_2, Sol.instance)){
+                swap_two_clients_from_one_truck(Sol.truck_path[truck1],nclient1_1, nclient1_2);
+            }
+        }
+
+        }
+        if (method==1){
+
+        }
+        if (method==2){
+
+        }
+
+
+
+
+
+
+
+
+
+    }
+
+}
+

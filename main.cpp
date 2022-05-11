@@ -18,8 +18,8 @@ using namespace std;
 
 int main(){
     double cost [3];
-    for (int i=0;i<3;i++)
-        cost[i]=i;
+    for (int i=0;i<3;i++){
+        cost[i]=i;}
 
     int number_of_client = 100;
     int height = 800;
