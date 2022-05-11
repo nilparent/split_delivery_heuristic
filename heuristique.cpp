@@ -35,7 +35,6 @@ bool cout_swap_two_clients_from_one_truck(Truck& truck,int i, int j,const Instan
 
     int id_client_swap_1= truck.path[i];
     int id_client_swap_2= truck.path[j];
-    //problem with i=0 and j=client_serve-1
 
     int id_depot=instance.nbclient;
 
@@ -51,8 +50,13 @@ bool cout_swap_two_clients_from_one_truck(Truck& truck,int i, int j,const Instan
 
 //calcul des coûts
 
-    initial_cost += calc_distance(instance,id_swap_before_1,id_client_swap_2,id_depot);
-    initial_cost += calc_distance(instance,id_swap_after_1,id_client_swap_2,id_depot);
+    initial_cost += calc_distance(instance,id_swap_before_1,id_client_swap_1,id_depot);
+    initial_cost += calc_distance(instance,id_swap_after_1,id_client_swap_1,id_depot);
+    initial_cost += calc_distance(instance,id_swap_before_2,id_client_swap_2,id_depot);
+    initial_cost += calc_distance(instance,id_swap_after_2,id_client_swap_2,id_depot);
+
+    final_cost += calc_distance(instance,id_swap_before_1,id_client_swap_2,id_depot);
+    final_cost += calc_distance(instance,id_swap_after_1,id_client_swap_2,id_depot);
     final_cost += calc_distance(instance,id_swap_before_2,id_client_swap_1,id_depot);
     final_cost += calc_distance(instance,id_swap_after_2,id_client_swap_1,id_depot);
 
@@ -73,7 +77,28 @@ void swap_two_clients_from_one_truck(Truck& truck,int i, int j){
 }
 
 bool cout_D_up_star(Truck& truck,int i, int j,const Instance & instance){
+    int id_client_swap_1= truck.path[i];
+    int id_client_swap_2= truck.path[j];
 
+    int id_depot=instance.nbclient;
+
+    int id_swap_before_1;
+    int id_swap_after_1;//no need
+
+    int id_swap_before_2;//no need
+    int id_swap_after_2;
+    assignation_client_depot(i,id_swap_before_1,id_swap_after_1,id_depot,truck);
+    assignation_client_depot(j,id_swap_before_2,id_swap_after_2,id_depot,truck);
+
+    //Calcul des coûts
+    double initial_cost = 0;
+    double final_cost= 0;
+    initial_cost += calc_distance(instance,id_swap_before_1,id_client_swap_1,id_depot);
+    initial_cost += calc_distance(instance,id_swap_after_2,id_client_swap_2,id_depot);
+    final_cost += calc_distance(instance,id_swap_before_2,id_client_swap_1,id_depot);
+    final_cost += calc_distance(instance,id_swap_after_2,id_client_swap_1,id_depot);
+
+    return initial_cost>final_cost;
 }
 void D_up_star(Truck& truck,int i,int j){
     //reverse the client between i and j
