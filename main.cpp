@@ -22,25 +22,21 @@ int main(){
     for (int i=0;i<3;i++){
         cost[i]=i;}
 
-    int number_of_client = 10;
+    int number_of_client = 500;
 
-    int height = 800;
-    int width = 800;
+    int height = 500;
+    int width = 500;
 
-    int capacity_max = 5;
-    int demand_max = 15;
-    int number_of_truck_max = 500;
+    int capacity_max = 1000;
+    int demand_max = 5;
+    int number_of_truck_max = 50;
 
 
     Solution sol = Solution(number_of_client,height,width,demand_max,number_of_truck_max,capacity_max,cost);
+    sol.displaysolution();
     double a;
     a=calcul_cout_solution(sol);
     cout<< a;
-
-    //sol.displaysolution();
-//    for (int i =0;i<number_of_truck_max;i++)
- //       if (sol.truck_path[i].use)
-  //          sol.truck_path[i].print();
 
 
 

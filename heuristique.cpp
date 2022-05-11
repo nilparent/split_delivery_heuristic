@@ -30,7 +30,7 @@ double calc_distance(const Instance & instance,int id1,int id2,int depot_client)
    return distance(instance.listclient[id1],instance.listclient[id2]);
 }
 
-bool cout_swap_two_clients_from_one_truck(Truck& truck,int i, int j,Instance & instance){
+bool cout_swap_two_clients_from_one_truck(Truck & truck,int i, int j,Instance instance){
     double initial_cost = 0;
     double final_cost= 0;
 

@@ -171,11 +171,6 @@ Solution :: Solution(int numberofclient,int Xmap,int Ymap,int Maxdemand,double N
         //next client
         is_client_serve = false;
     }
-    int cost = 0;
-    for (int i=0;i<nbtruckmax;i++){
-        cost+=truck_path[i].cost(instance, COST);
-    }
-    solution_cost = cost;
 }
 
 void drawline(Client a,Client b){
@@ -208,7 +203,6 @@ void Solution :: displaysolution(){
 }
 Solution :: ~Solution(){
     delete [] truck_path;
-    instance.~Instance();
 }
 
 void Solution :: displayinstance(){
