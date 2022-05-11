@@ -7,7 +7,7 @@ struct Truck{
    double * quantity_took;// quantity took at the stop
    double sum_quantity_took;
    int number_of_client_deserve;
-   int cost(Instance instance, int cout[]);//calculate the cost of the truck and save it in personnal_cost
+   int cost(Instance instance, double cout[]);//calculate the cost of the truck and save it in personnal_cost
    int personnal_cost;
    void print();
    ~Truck();
@@ -28,3 +28,4 @@ struct Solution{
     void displayinstance();
 };
 void displayclient(Client a);
+int calcul_cout_solution(Solution Sol);

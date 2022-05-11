@@ -30,7 +30,7 @@ void Truck :: print(){
     cout<< '\n';
 }
 
-int Truck :: cost(Instance instance, int cout[]){
+int Truck :: cost(Instance instance, double cout[]){
     int cost = 0;
     int usecost = use * cout[0];
     int routingcost = 0;
@@ -171,16 +171,25 @@ Solution :: Solution(int numberofclient,int Xmap,int Ymap,int Maxdemand,double N
         //next client
         is_client_serve = false;
     }
-    int cost=0;
+    int cost = 0;
     for (int i=0;i<nbtruckmax;i++){
-        cost+=truck_path[i].cost(instance, cost);
+        cost+=truck_path[i].cost(instance, COST);
     }
-    solution_cost=cost;
+    solution_cost = cost;
 }
 
 void drawline(Client a,Client b){
     drawLine(a.x,a.y,b.x,b.y,BLACK);
 }
+
+int calcul_cout_solution(Solution Sol){
+    int cost = 0;
+    for (int i=0;i<Sol.nbtruckmax;i++){
+        cost+=Sol.truck_path[i].cost(Sol.instance, Sol.cost);
+    }
+    return cost;
+}
+
 void Solution :: displaysolution(){
     instance.displayinstance();
     for (int i=0;i<nbtruckmax;i++){

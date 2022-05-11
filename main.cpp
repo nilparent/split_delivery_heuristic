@@ -33,6 +33,10 @@ int main(){
 
 
     Solution sol = Solution(number_of_client,height,width,demand_max,number_of_truck_max,capacity_max,cost);
+    double a;
+    a=calcul_cout_solution(sol);
+    cout<< a;
+
     //sol.displaysolution();
 //    for (int i =0;i<number_of_truck_max;i++)
  //       if (sol.truck_path[i].use)

@@ -2,9 +2,35 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 
+void assignation_client_depot(int i,int& id_swap_before, int& id_swap_after,int id_depot,Truck truck){
+    //give the id of the client before and after the ieme client deserved by the truck
+
+    if (i==0){
+        id_swap_before = id_depot;
+    }
+    else {
+        id_swap_before = truck.path[i-1];
+    }
+    if(i == truck.number_of_client_deserve-1)
+        id_swap_after = id_depot;
+
+    else{
+        id_swap_after = truck.path[i+1];
+    }
+}
 
 
-bool cout_swap_two_clients_from_one_truck(Truck& truck,int i, int j,Instance depot){
+double calc_distance(const Instance & instance,int id1,int id2,int depot_client){
+   if (id1 == depot_client)
+       return(distance(instance.listclient[id2],instance.depot));
+
+   if (id2 == depot_client)
+       return(distance(instance.listclient[id1],instance.depot));
+
+   return distance(instance.listclient[id1],instance.listclient[id2]);
+}
+
+bool cout_swap_two_clients_from_one_truck(Truck& truck,int i, int j,Instance & instance){
     double initial_cost = 0;
     double final_cost= 0;
 
@@ -126,7 +152,7 @@ void first_heuristic(Solution& Sol, int nb_max_iter){
         nclient2_2 = rand() % Sol.truck_path[truck1].number_of_client_deserve;
 
         int method ;
-        method = rand()%3;
+        method = 0;//rand()%3;
 
         if (method==0){
             if (cout_swap_two_clients_from_one_truck(Sol.truck_path[truck1],nclient1_1, nclient1_2, Sol.instance)){
@@ -134,13 +160,6 @@ void first_heuristic(Solution& Sol, int nb_max_iter){
             }
         }
 
-        }
-        if (method==1){
-
-        }
-        if (method==2){
-
-        }
 
 
 
