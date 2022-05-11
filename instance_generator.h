@@ -27,5 +27,5 @@ struct Instance{
     ~Instance();
     void displayinstance();
 };
-double distance(Client a, Client b);
+double distance(const Client & a, const Client & b);
 
