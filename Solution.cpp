@@ -1,10 +1,6 @@
 #pragma once
 #include "tools.h"
 #include "Solution.h"
-Truck :: ~Truck(){
-    delete [] path;
-    delete [] quantity_took;
-}
 
 void Truck :: print(){
 
@@ -124,35 +120,18 @@ Solution :: Solution(int numberofclient,int Xmap,int Ymap,int Maxdemand,double N
     capacitytruck = CAPACITYTRUCK;
     for (int i=0;i<3;i++)
         cost[i] = COST[i];
-    truck_path = new Truck [nbtruckmax];
+
+//    if (not(truck_path == NULL))
+//        delete truck_path;
+
+//    truck_path = new Truck [nbtruckmax];
 
     for (int i=0;i<nbtruckmax;i++)
         truck_path[i].use = false,
-                truck_path[i].path = new int [instance.nbclient],
                 truck_path[i].sum_quantity_took = 0,
-                truck_path[i].number_of_client_deserve = 0,
-                truck_path[i].quantity_took = new double [instance.nbclient];
-
+                truck_path[i].number_of_client_deserve = 0;
     //initialize the solution
     int actual_truck = 0; //the truck that we will full
-
-    //we have to sort the listclient of the instance to have a path which minimize the travel between each client
-
-
-    //we copy the list
-    //    ;
-
-//    for (int i =0;i<instance.nbclient;i++){
-//        cout<<"\n idclient i :";
-//        cout<<i;
-//        cout<<"\n position : ";
-//        cout<<instance.listclient[i].x;
-//        cout<<"   ";
-//        cout<<instance.listclient[i].y;
-//        cout<<"\n demand : ";
-//        cout<<instance.listclient[i].demand;
-//    }
-
 
     double demand_deserve [instance.nbclient];
     for (int i=0;i<instance.nbclient;i++)
@@ -199,10 +178,9 @@ void Solution :: displaysolution(){
             drawline(instance.depot,point);
         }
     }
-    endGraphics();
 }
 Solution :: ~Solution(){
-    delete [] truck_path;
+    //delete [] truck_path;
 }
 
 void Solution :: displayinstance(){

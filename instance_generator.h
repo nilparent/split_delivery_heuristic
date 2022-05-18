@@ -20,7 +20,6 @@ struct Instance{
     Client depot;
     Client * listclient;
     double * distanceclient;
-    bool * client_already_served;
     Instance();
     Instance(int numberofclient,int Xmap,int Ymap,int Maxdemand);
     void Modif_instance(int numberofclient,int Xmap,int Ymap,int Maxdemand);

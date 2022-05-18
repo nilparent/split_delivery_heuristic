@@ -1,7 +1,7 @@
 #include "heuristique.h"
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
-
+using namespace std;
 void assignation_client_depot(int i,int& id_swap_before, int& id_swap_after,int id_depot,Truck truck){
     //give the id of the client before and after the ieme client deserved by the truck
 

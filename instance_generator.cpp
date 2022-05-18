@@ -12,7 +12,6 @@ double distance( const Client &a, const Client &b) {
 Instance :: ~Instance(){
     delete [] listclient;
     delete [] distanceclient;
-    delete [] client_already_served;
 }
 void Instance :: Modif_instance(int numberofclient, int Xmap, int Ymap, int Maxdemand){
     nbclient = numberofclient;
@@ -78,10 +77,10 @@ void displayclient(Client a ,Color col){
 
 void Instance :: displayinstance(){
     openWindow(xmap,ymap);
+    displayclient(depot,RED);
     for(int i=0;i<nbclient;i++){
         displayclient(listclient[i],BLACK);
     }
-    displayclient(depot,RED);
 }
 Instance ::Instance(){//pb d'instance...
 

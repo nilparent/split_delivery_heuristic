@@ -8,7 +8,6 @@ using namespace Imagine;
 #include <string>
 #include <ctime>
 #include <cstdlib>
-using namespace std;
 
 //import our files
 #include "instance_generator.h"
@@ -24,19 +23,20 @@ int main(){
 
     int number_of_client = 500;
 
+
     int height = 500;
     int width = 500;
 
-    int capacity_max = 1000;
-    int demand_max = 5;
+    int capacity_max = 25;
+    int demand_max = 1;
     int number_of_truck_max = 50;
 
 
     Solution sol = Solution(number_of_client,height,width,demand_max,number_of_truck_max,capacity_max,cost);
     sol.displaysolution();
-    double a;
-    a=calcul_cout_solution(sol);
-    cout<< a;
+    endGraphics();
+
+
 
 
 
