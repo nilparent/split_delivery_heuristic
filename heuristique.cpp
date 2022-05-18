@@ -2,6 +2,7 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 using namespace std;
+
 void assignation_client_depot(int i,int& id_swap_before, int& id_swap_after,int id_depot,Truck truck){
     //give the id of the client before and after the ieme client deserved by the truck
 
@@ -21,45 +22,64 @@ void assignation_client_depot(int i,int& id_swap_before, int& id_swap_after,int 
 
 
 double calc_distance(const Instance & instance,int id1,int id2,int depot_client){
-   if (id1 == depot_client)
-       return(distance(instance.listclient[id2],instance.depot));
+    if (id1 == depot_client)
+        return(distance(instance.listclient[id2],instance.depot));
 
-   if (id2 == depot_client)
-       return(distance(instance.listclient[id1],instance.depot));
+    if (id2 == depot_client)
+        return(distance(instance.listclient[id1],instance.depot));
 
-   return distance(instance.listclient[id1],instance.listclient[id2]);
+    return instance.distanceclient[id1*instance.nbclient + id2];
 }
 
 bool cout_swap_two_clients_from_one_truck(Truck & truck,int i, int j,Instance instance){
     double initial_cost = 0;
     double final_cost= 0;
+    if (abs(i-j)>1){//calcul are different if they are consecutiv
+        int id_client_swap_1= truck.path[i];
+        int id_client_swap_2= truck.path[j];
 
-    int id_client_swap_1= truck.path[i];
-    int id_client_swap_2= truck.path[j];
+        int id_depot=instance.nbclient;
 
+        int id_swap_before_1;
+        int id_swap_after_1;
+
+        int id_swap_before_2;
+        int id_swap_after_2;
+
+        assignation_client_depot(i,id_swap_before_1,id_swap_after_1,id_depot,truck);
+        assignation_client_depot(j,id_swap_before_2,id_swap_after_2,id_depot,truck);
+
+
+        //calcul des coûts
+
+        initial_cost += calc_distance(instance,id_swap_before_1,id_client_swap_1,id_depot);
+        initial_cost += calc_distance(instance,id_swap_after_1,id_client_swap_1,id_depot);
+        initial_cost += calc_distance(instance,id_swap_before_2,id_client_swap_2,id_depot);
+        initial_cost += calc_distance(instance,id_swap_after_2,id_client_swap_2,id_depot);
+
+        final_cost += calc_distance(instance,id_swap_before_1,id_client_swap_2,id_depot);
+        final_cost += calc_distance(instance,id_swap_after_1,id_client_swap_2,id_depot);
+        final_cost += calc_distance(instance,id_swap_before_2,id_client_swap_1,id_depot);
+        final_cost += calc_distance(instance,id_swap_after_2,id_client_swap_1,id_depot);
+
+        return initial_cost>final_cost;
+    }
+    int indicemin = min(i,j);
+    int indicemax = indicemin + 1;
+    int id_client_swap_1= truck.path[indicemin];
+    int id_client_swap_2= truck.path[indicemax];
     int id_depot=instance.nbclient;
 
-    int id_swap_before_1;
-    int id_swap_after_1;
+    int id_swap_before;
+    int no_use;//we don't use it juste to use simply the function assignation_client_depot
+    int id_swap_after;
+    assignation_client_depot(indicemin,id_swap_before,no_use,id_depot,truck);
+    assignation_client_depot(indicemax,no_use,id_swap_after,id_depot,truck);
 
-    int id_swap_before_2;
-    int id_swap_after_2;
-
-    assignation_client_depot(i,id_swap_before_1,id_swap_after_1,id_depot,truck);
-    assignation_client_depot(j,id_swap_before_2,id_swap_after_2,id_depot,truck);
-
-
-//calcul des coûts
-
-    initial_cost += calc_distance(instance,id_swap_before_1,id_client_swap_1,id_depot);
-    initial_cost += calc_distance(instance,id_swap_after_1,id_client_swap_1,id_depot);
-    initial_cost += calc_distance(instance,id_swap_before_2,id_client_swap_2,id_depot);
-    initial_cost += calc_distance(instance,id_swap_after_2,id_client_swap_2,id_depot);
-
-    final_cost += calc_distance(instance,id_swap_before_1,id_client_swap_2,id_depot);
-    final_cost += calc_distance(instance,id_swap_after_1,id_client_swap_2,id_depot);
-    final_cost += calc_distance(instance,id_swap_before_2,id_client_swap_1,id_depot);
-    final_cost += calc_distance(instance,id_swap_after_2,id_client_swap_1,id_depot);
+    initial_cost +=calc_distance(instance,id_swap_before,id_client_swap_1,id_depot);
+    initial_cost +=calc_distance(instance,id_swap_after,id_client_swap_2,id_depot);
+    final_cost += calc_distance(instance,id_swap_before,id_client_swap_2,id_depot);
+    final_cost += calc_distance(instance,id_swap_after,id_client_swap_1,id_depot);
 
     return initial_cost>final_cost;
 }
@@ -125,6 +145,39 @@ void D_up_star(Truck& truck,int i,int j){
     delete[] quantity_took_change;
 }
 
+bool cout_exchange_and_swap_two_clients_from_two_truck(Truck & truck1,Truck & truck2 , int i, int j,Instance instance){
+    double initial_cost = 0;
+    double final_cost= 0;
+
+    int id_client_swap_1= truck1.path[i];
+    int id_client_swap_2= truck2.path[j];
+
+    int id_depot=instance.nbclient;
+
+    int id_swap_before_1;
+    int id_swap_after_1;
+
+    int id_swap_before_2;
+    int id_swap_after_2;
+
+    assignation_client_depot(i,id_swap_before_1,id_swap_after_1,id_depot,truck1);
+    assignation_client_depot(j,id_swap_before_2,id_swap_after_2,id_depot,truck2);
+
+
+    //calcul des coûts
+
+    initial_cost += calc_distance(instance,id_swap_before_1,id_client_swap_1,id_depot);
+    initial_cost += calc_distance(instance,id_swap_after_1,id_client_swap_1,id_depot);
+    initial_cost += calc_distance(instance,id_swap_before_2,id_client_swap_2,id_depot);
+    initial_cost += calc_distance(instance,id_swap_after_2,id_client_swap_2,id_depot);
+
+    final_cost += calc_distance(instance,id_swap_before_1,id_client_swap_2,id_depot);
+    final_cost += calc_distance(instance,id_swap_after_1,id_client_swap_2,id_depot);
+    final_cost += calc_distance(instance,id_swap_before_2,id_client_swap_1,id_depot);
+    final_cost += calc_distance(instance,id_swap_after_2,id_client_swap_1,id_depot);
+
+    return initial_cost>final_cost;
+}
 
 bool exchange_and_swap_two_clients_from_two_truck(Truck& truck1,int i1,Truck& truck2,int i2,double capacity_truck){
     
@@ -180,9 +233,19 @@ void first_heuristic(Solution& Sol, int nb_max_iter){
         method = 0;//rand()%3;
 
         if (method==0){
+            double cot = Sol.calcul_cout_solution();
             if (cout_swap_two_clients_from_one_truck(Sol.truck_path[truck1],nclient1_1, nclient1_2, Sol.instance)){
                 swap_two_clients_from_one_truck(Sol.truck_path[truck1],nclient1_1, nclient1_2);
             }
+            if (cot > Sol.calcul_cout_solution()){
+                cout<<"solution valide :";
+                cout<<Sol.check_solution();
+                cout<<"\n";
+                cout<<"cout_solution :";
+                cout<<Sol.calcul_cout_solution();
+                cout<<"\n";
+            }
+
         }
 
 

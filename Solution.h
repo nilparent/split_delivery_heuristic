@@ -1,5 +1,6 @@
 #pragma once
 #include "instance_generator.h"
+
 const int nb_truck_max = 50;
 const int stop_max = 50;
 
@@ -24,10 +25,13 @@ struct Solution{
     Truck truck_path [nb_truck_max];
     void displaysolution();
     void first_optimization();
+    bool check_solution();
+    double calcul_cout_solution();
     void calcul_solution_cost();//actualize the solution_cost (good for the beginning)
     Solution(int numberofclient,int Xmap,int Ymap,int Maxdemand,double NBTRUCKMAX, double CAPACITYTRUCK,double Cost []);
-    ~Solution();
     void displayinstance();
+
 };
 void displayclient(Client a);
+bool check_solution(Solution sol);
 int calcul_cout_solution(Solution Sol);

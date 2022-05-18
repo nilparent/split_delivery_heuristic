@@ -32,15 +32,18 @@ int Truck :: cost(Instance instance, double cout[]){
     int routingcost = 0;
     routingcost += distance(instance.depot,instance.listclient[path[0]]);
     routingcost += distance(instance.depot,instance.listclient[path[number_of_client_deserve-1]]);
+
     for (int i=1;i<number_of_client_deserve - 1;i++){
         routingcost += distance(instance.listclient[path[i-1]],instance.listclient[path[i]]);
     }
+
     routingcost *= cout[1];
     int stop_cost = cout[2] * number_of_client_deserve;
     cost = stop_cost+ routingcost + usecost;
     personnal_cost = cost;
     return cost;
 }
+
 bool is_in(int T [],int len_T,int argument){
     for (int i=0;i<len_T;i++)
         if (T[i] == argument)
@@ -156,12 +159,13 @@ void drawline(Client a,Client b){
     drawLine(a.x,a.y,b.x,b.y,BLACK);
 }
 
-int calcul_cout_solution(Solution Sol){
-    int cost = 0;
-    for (int i=0;i<Sol.nbtruckmax;i++){
-        cost+=Sol.truck_path[i].cost(Sol.instance, Sol.cost);
+double Solution :: calcul_cout_solution(){
+    double cost1 = 0;
+    for (int i=0;i<nbtruckmax;i++){
+        if (truck_path[i].use)
+            cost1+=truck_path[i].cost(instance, cost);
     }
-    return cost;
+    return cost1;
 }
 
 void Solution :: displaysolution(){
@@ -174,15 +178,55 @@ void Solution :: displaysolution(){
                 drawline(point,instance.listclient[numclient]);
                 point = instance.listclient[numclient];
             }
-
             drawline(instance.depot,point);
         }
     }
 }
-Solution :: ~Solution(){
-    //delete [] truck_path;
+bool check_solution(Solution sol){
+
+    int client_serve[sol.instance.nbclient];
+    Truck truck;
+    for (int i=0;i<sol.instance.nbclient;i++){
+        client_serve[i]=0;
+    }
+
+    for (int j=0;j<sol.nbtruckmax;j++){
+        truck=sol.truck_path[j];
+        if (truck.use){
+            for (int h=0;h<truck.number_of_client_deserve;h++){
+            client_serve[truck.path[h]]+=truck.quantity_took[h];
+            }
+        }
+    }
+    for (int i=0;i<sol.instance.nbclient;i++){
+        if(client_serve[i]!=sol.instance.listclient[i].demand){
+                return false;}
+    return true;
+    }
 }
 
+bool Solution :: check_solution(){
+
+    int client_serve[instance.nbclient];
+    Truck truck;
+    for (int i=0;i<instance.nbclient;i++){
+        client_serve[i]=0;
+    }
+
+    for (int j=0;j<nbtruckmax;j++){
+        truck=truck_path[j];
+        if (truck.use){
+            for (int h=0;h<truck.number_of_client_deserve;h++){
+            client_serve[truck.path[h]]+=truck.quantity_took[h];
+            }
+        }
+    }
+    for (int i=0;i<instance.nbclient;i++){
+        if(client_serve[i]!=instance.listclient[i].demand){
+                return false;}
+    return true;
+    }
+}
 void Solution :: displayinstance(){
     instance.displayinstance();
 }

@@ -9,16 +9,11 @@ double distance( const Client &a, const Client &b) {
     return dist;
 }
 
-Instance :: ~Instance(){
-    delete [] listclient;
-    delete [] distanceclient;
-}
 void Instance :: Modif_instance(int numberofclient, int Xmap, int Ymap, int Maxdemand){
     nbclient = numberofclient;
     maxdemand = Maxdemand;
     xmap=Xmap;
     ymap = Ymap;
-    listclient = new Client[nbclient];
     srand ( (unsigned int)time(0) );
     if (maxdemand == 1)
         for(int i=0;i<nbclient;i++){
@@ -33,7 +28,7 @@ void Instance :: Modif_instance(int numberofclient, int Xmap, int Ymap, int Maxd
             listclient[i].y = rand()%ymap;
         }
     }
-    distanceclient = new double[nbclient*nbclient];
+
     for (int i=0;i<nbclient;i++){
         for (int j=0;j<nbclient;j++)
             distanceclient[i+j*nbclient]=distance(listclient[i],listclient[j]);
@@ -47,7 +42,6 @@ Instance :: Instance(int numberofclient,int Xmap,int Ymap,int Maxdemand){
     maxdemand = Maxdemand;
     xmap=Xmap;
     ymap = Ymap;
-    listclient = new Client[nbclient];
     srand ( (unsigned int)time(0) );
     if (maxdemand == 1)
         for(int i=0;i<nbclient;i++){
@@ -61,14 +55,13 @@ Instance :: Instance(int numberofclient,int Xmap,int Ymap,int Maxdemand){
             listclient[i].x = rand()%xmap;
             listclient[i].y = rand()%ymap;
         }}
-    distanceclient = new double[nbclient*nbclient];
     for (int i=0;i<nbclient;i++){
         for (int j=0;j<nbclient;j++)
             distanceclient[i+j*nbclient]=distance(listclient[i],listclient[j]);
     }
     depot.x = xmap/2;
     depot.y = ymap/2;
-    depot.demand = 10;
+    depot.demand = 5;
 }
 
 void displayclient(Client a ,Color col){
